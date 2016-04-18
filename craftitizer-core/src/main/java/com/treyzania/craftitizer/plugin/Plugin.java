@@ -2,55 +2,23 @@ package com.treyzania.craftitizer.plugin;
 
 import java.io.File;
 
-import com.treyzania.craftitizer.RichInstallation;
+import com.treyzania.craftitizer.Installation;
 
-public class Plugin {
+public interface Plugin {
 
-	public static final String JAR_EXTENSION = ".jar";
-	public static final String PLUGIN_DATA_EXTENSION = ".plugin.conf";
-	
-	public final RichInstallation installation;
-	public final String pluginName;
-	public final String pluginVersion;
-	
-	public Plugin(RichInstallation install, String name, String ver) {
-		
-		this.installation = install;
-		
-		this.pluginName = name;
-		this.pluginVersion = ver;
-		
-	}
-	
-	public Plugin(RichInstallation install, String name) {
-		this(install, name, null);
-	}
+	/**
+	 * @return The plugin's simple name, without any version numbers or extra data.
+	 */
+	public String getName();
 	
 	/**
-	 * @return A File object representing the jarfile of the plugin.
+	 * @return A File object representing the data folder of the plugin, null if not applicable.
 	 */
-	public File getJar() {
-		
-		StringBuilder sb = new StringBuilder(this.pluginName);
-		
-		if (this.pluginVersion != null) {
-			
-			sb.append("-");
-			sb.append(this.pluginVersion);
-			
-		}
-		
-		sb.append(JAR_EXTENSION);
-		
-		return new File(this.installation.getPluginsDirectory(), sb.toString());
-		
-	}
+	public File getDataDirectory(Installation install);
 	
 	/**
-	 * @return A File object representing the properties file used to keep track of the installed version.
+	 * @return A File object representing the main config file for the plugin, null if not applicable. 
 	 */
-	public File getPropFile() {
-		return new File(this.installation.getPluginsDirectory(), this.pluginName + PLUGIN_DATA_EXTENSION);
-	}
+	public File getConfigFile(Installation install);
 	
 }
