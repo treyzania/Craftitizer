@@ -2,18 +2,18 @@ package com.treyzania.craftitizer.plugin;
 
 import java.io.File;
 
-import com.treyzania.craftitizer.Installation;
+import com.treyzania.craftitizer.RichInstallation;
 
 public class Plugin {
 
 	public static final String JAR_EXTENSION = ".jar";
 	public static final String PLUGIN_DATA_EXTENSION = ".plugin.conf";
 	
-	public final Installation installation;
+	public final RichInstallation installation;
 	public final String pluginName;
 	public final String pluginVersion;
 	
-	public Plugin(Installation install, String name, String ver) {
+	public Plugin(RichInstallation install, String name, String ver) {
 		
 		this.installation = install;
 		
@@ -22,7 +22,7 @@ public class Plugin {
 		
 	}
 	
-	public Plugin(Installation install, String name) {
+	public Plugin(RichInstallation install, String name) {
 		this(install, name, null);
 	}
 	
