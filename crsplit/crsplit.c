@@ -45,13 +45,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	char* splitpath;
-	DIR* splitdir = opendir(splitpath);
-
-	if (splitdir == NULL) {
-		perror("opendir");
-		return -1;
-	}
+	char* splitpath = argv[1];
 
 	makeextdir(splitpath, EXEC_DIR_NAME, EXEC_DIR_FLAGS);
 	makeextdir(splitpath, DATA_DIR_NAME, DATA_DIR_FLAGS);
