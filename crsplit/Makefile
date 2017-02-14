@@ -1,6 +1,6 @@
-CC='gcc'
+CC=gcc
 INSTALL_TO='.'
-TEST_DIR='test'
+TEST_DIR=test
 
 crsplit: crsplit.o
 	${CC} -o crsplit crsplit.o
