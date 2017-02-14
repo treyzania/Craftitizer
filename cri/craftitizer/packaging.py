@@ -1,3 +1,4 @@
+import craftitizer.repositories
 
 class Package:
 	
@@ -41,7 +42,7 @@ class PackageMeta:
 		self.version = version
 
 class Context:
-		
+	
 	def __init__(self, name):
 		self.pkgname = name
 
@@ -57,6 +58,6 @@ class LoadContext(Context):
 		self.deps.append(PackageMeta(name, version))
 	
 	def specify_repo(name, url):
-		self.repos.append({'name': name, 'url': url})
+		self.repos.append(RepoMeta(name, url))
 
 
