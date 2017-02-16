@@ -1,0 +1,3 @@
+[submodule "kkgenconf"]
+	path = kkgenconf
+	url = git@github.com:treyzania/kkgenconf.git
