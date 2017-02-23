@@ -2,8 +2,9 @@ name: test
 exec:
     name: test
     params:
-        start_mem_mb: 2048
-        max_mem_mb: 2048
+        start_mem: 2048
+        max_mem: 2048
+        jar: foo.jar
 envvars:
     SOME_ENV_VAR: somevalue
 group: test
