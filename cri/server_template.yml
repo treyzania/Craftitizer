@@ -1,0 +1,9 @@
+name: test
+exec:
+    name: test
+    params:
+        start_mem_mb: 2048
+        max_mem_mb: 2048
+envvars:
+    SOME_ENV_VAR: somevalue
+group: test
