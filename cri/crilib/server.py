@@ -10,8 +10,8 @@ class Server(object):
         cfg = ruamel.yaml.load(content, ruamel.yaml.RoundTripLoader)
         self.path = path
         self.name = cfg["name"]
-        self.executor = cfg["exec"]["name"]
-        self.execparams = cfg["exec"]["params"]
+        exe_cfg = cfg["exec"]
+        self.executor = make_executor(self, exe_cfg["name"], exe_cfg["params"])
         self.envvars = cfg["envvars"]
         self.group = cfg["group"]
 
@@ -21,8 +21,24 @@ class Executor(object):
     def start(self):
         print("error: invalid server executor")
 
-class SimpleJavaExecutor(Executor):
-    def __init__(self, serv):
-        super(self)
+class DebugExecutor(Executor):
+    def __init__(self, serv, params):
+        super().__init__(serv)
     def start(self):
-        print("starting server ", self.server.name);
+        print("Started debug executor, for server:", self.server.name)
+
+class SimpleJavaExecutor(Executor):
+    def __init__(self, serv, params):
+        super().__init__(serv)
+    def start(self):
+        pass
+
+executors = {
+    'test': DebugExecutor,
+    'simplejava': SimpleJavaExecutor
+}
+
+def make_executor(serv, name, params):
+    global executors
+    clazz = executors[name];
+    return clazz(serv, params);
