@@ -25,13 +25,7 @@ class Package:
 	def state_prestop(self, ctx):
 		pass
 
-class PackageMeta:
-	def __init__(self, name, version):
-		self.name = name
-		self.version = version
-
 class Context:
-
 	def __init__(self, name):
 		self.pkgname = name
 
