@@ -26,6 +26,10 @@ class PackageMeta:
 		self.name = name
 		self.version = version
 
+class PackageException(Exception):
+	def __init__(self, reason):
+		super().__init__(reason)
+
 cache_dir = os.path.expanduser("~/.cache/craftitizer/repo")
 repos = [
 	Repository("Global", "https://raw.githubusercontent.com/Bapcraft/craftitizer-global-repo/master/public/")
@@ -56,7 +60,8 @@ def find_package_def(pkg):
 				try:
 					__descriptor(data)
 				except Exception:
-					raise Exception("Package " + pkg.name + " " + pkg.version + " at " + r.name + " is invalid!")
+					print("warning: repo", r.name, "has invalid package", pkg.name, pkg.version)
+					continue
 
 				package_path = os.path.dirname(cache_path)
 				if not os.path.exists(package_path):
@@ -66,7 +71,7 @@ def find_package_def(pkg):
 					tocache.write(data)
 				return cache_path
 
-		raise Exception("Could not find package " + pkg.name + " " + pkg.version + "!")
+		raise PackageException("Could not find package " + pkg.name + " " + pkg.version + "!")
 	else:
 		return cache_path
 

@@ -40,7 +40,11 @@ class PackageLoader:
 	def init_pkg(self, pkg):
 		bundle = self.__find_loaded_package(pkg.name)
 		if bundle == None:
-			bundle = repos.init_package(pkg)
+			try:
+				bundle = repos.init_package(pkg)
+			except PackageException:
+				raise Exception("Couldn't resolve dependencies.")
+
 			self.package_bundles.append(bundle)
 			self.use_counts[pkg.name] = 1
 			self.__load_pkg(bundle)
