@@ -26,7 +26,6 @@ class LoadContext(Context):
 		self.deps.append(PackageMeta(name, version))
 
 class PackageLoader:
-
 	def __init__(self):
 		self.package_bundles = []
 		self.use_counts = {}
