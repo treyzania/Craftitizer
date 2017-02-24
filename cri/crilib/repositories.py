@@ -29,7 +29,9 @@ class PackageMeta:
 		self.version = version
 
 cache_dir = os.path.expanduser("~/.cache/craftitizer/repo")
-repos = [] # TODO Set up repos.
+repos = [
+	'global': 'https://raw.githubusercontent.com/bapcraft/craftitizer-global-repo/master/public/'
+]
 
 def __gen_cached_package_path(pkg):
 	return os.join(cache_dir, pkg.name, pkg.version, "pkgconf.py")
