@@ -14,12 +14,12 @@ import crilib.repositories as repos
 # * prestop
 
 class Context:
-	def __init__(self, name):
-		self.pkgname = name
+	def __init__(self):
+		pass
 
 class LoadContext(Context):
 	def __init__(self, ldr):
-		super(name)
+		super().__init__()
 		self.loader = ldr
 		self.deps = []
 	def depend(name, version):
