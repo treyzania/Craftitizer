@@ -1,4 +1,5 @@
 import crilib.repositories as repos
+import crilib.resources as res
 
 # Stages:
 # * load
@@ -18,17 +19,18 @@ class Context:
 		pass
 
 class LoadContext(Context):
+	self.deps = []
 	def __init__(self, ldr):
 		super().__init__()
 		self.loader = ldr
-		self.deps = []
 	def depend(name, version):
 		self.deps.append(PackageMeta(name, version))
 
 class PackageLoader:
+	self.package_bundles = []
+	self.use_counts = {}
 	def __init__(self):
-		self.package_bundles = []
-		self.use_counts = {}
+		pass
 
 	def __find_loaded_package(self, name):
 		for p in self.package_bundles:
