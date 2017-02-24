@@ -3,7 +3,7 @@ import os.path as paths
 import subprocess
 import ruamel.yaml
 
-class Server(object):
+class Server:
     def __init__(self, path):
         content = ""
         with open(path, 'r') as data:
@@ -16,7 +16,7 @@ class Server(object):
         self.envvars = cfg["envvars"]
         self.group = cfg["group"]
 
-class Executor(object):
+class Executor:
     def __init__(self, serv):
         self.server = serv
     def start(self):
