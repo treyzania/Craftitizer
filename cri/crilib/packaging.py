@@ -54,7 +54,10 @@ class PackageLoader:
 	def __load_pkg(self, bundle):
 		ctx = LoadContext(self)
 		if 'load' in dir(bundle.module):
-			bundle.module.load(ctx)
+			try:
+				bundle.module.load(ctx)
+			except:
+				print("error: exception when load()-ing package:", bundle.metadata.name)
 		for dep in ctx.deps:
 			self.init_pkg(dep)
 
