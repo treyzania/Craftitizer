@@ -1,22 +1,20 @@
+import os
 import os.path
 import urllib.request
 import importlib.util as imu
-
-def __get_package_suffix(desc):
-	return desc.name + "/" + desc.version + "/pkgconf.py"
 
 class Repository:
 	def __init__(self, name, url):
 		self.name = name
 		self.url = url
-	def get_package_def_string(self, desc):
-		suffix = get_url_suffixes(desc)
+	def get_package_url(self, desc):
+		return self.url + desc.name + "/" + desc.version + "/pkgconf.py"
+	def get_package_def_data(self, desc):
 		try:
-			req = urllib.request.urlopen(self.url + suffix)
-			return req.read()
+			req = urllib.request.urlopen(self.get_package_url(desc))
+			return req.read().decode("UTF-8")
 		except:
-			continue
-		return None
+			return None
 
 class PackageModuleDefinition:
 	def __init__(self, modname, version):
@@ -30,11 +28,11 @@ class PackageMeta:
 
 cache_dir = os.path.expanduser("~/.cache/craftitizer/repo")
 repos = [
-	'global': 'https://raw.githubusercontent.com/bapcraft/craftitizer-global-repo/master/public/'
+	Repository("Global", "https://raw.githubusercontent.com/Bapcraft/craftitizer-global-repo/master/public/")
 ]
 
 def __gen_cached_package_path(pkg):
-	return os.join(cache_dir, pkg.name, pkg.version, "pkgconf.py")
+	return os.path.join(cache_dir, pkg.name, pkg.version, "pkgconf.py")
 
 def __descriptor(source):
 	line = source.split("\n", 1)[0]
@@ -46,20 +44,25 @@ def __descriptor(source):
 	return PackageModuleDefinition(name, ver)
 
 def __descriptor_from_file(path):
-	with os.open(path, "r") as f:
+	with open(path, "r") as f:
 		return __descriptor(f.read())
 
 def find_package_def(pkg):
 	cache_path = __gen_cached_package_path(pkg)
 	if not os.path.exists(cache_path):
 		for r in repos:
-			data = r.get_package_def_string(pkg)
+			data = r.get_package_def_data(pkg)
 			if data != None:
 				try:
-					desc = __descriptor(data)
+					__descriptor(data)
 				except Exception:
-					raise Exception("Package " + pkg.name + " " + pkg.version + " is invalid at " + r.name + ".")
-				with os.open(cache_path, "w") as tocache:
+					raise Exception("Package " + pkg.name + " " + pkg.version + " at " + r.name + " is invalid!")
+
+				package_path = os.path.dirname(cache_path)
+				if not os.path.exists(package_path):
+					os.makedirs(package_path)
+
+				with open(cache_path, "w") as tocache:
 					tocache.write(data)
 				return cache_path
 
