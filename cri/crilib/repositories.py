@@ -2,27 +2,20 @@ import os.path
 import urllib.request
 import importlib.util as imu
 
-def get_url_suffixes(desc):
-	urls = []
-	urls.append(desc.name + "/" + desc.version + "/" + desc.name + "-" + desc.version + ".py")
-	urls.append(desc.name + "/" + desc.version + ".py")
-	urls.append(desc.name + "/" + desc.version + "/pkgconf.py")
-	urls.append(desc.name + "-" + desc.version + ".py")
-	return urls
+def __get_package_suffix(desc):
+	return desc.name + "/" + desc.version + "/pkgconf.py"
 
-class RepoMeta:
+class Repository:
 	def __init__(self, name, url):
 		self.name = name
 		self.url = url
-
 	def get_package_def_string(self, desc):
-		suffixes = get_url_suffixes(desc)
-		for suffix in suffixes:
-			try:
-				req = urllib.request.urlopen(self.url + suffix)
-				return req.read()
-			except:
-				continue
+		suffix = get_url_suffixes(desc)
+		try:
+			req = urllib.request.urlopen(self.url + suffix)
+			return req.read()
+		except:
+			continue
 		return None
 
 class PackageModuleDefinition:
