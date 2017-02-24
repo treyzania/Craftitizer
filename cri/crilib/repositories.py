@@ -30,13 +30,13 @@ class PackageException(Exception):
 	def __init__(self, reason):
 		super().__init__(reason)
 
-cache_dir = os.path.expanduser("~/.cache/craftitizer/repo")
+cache_dir = os.path.expanduser("~/.cache/craftitizer")
 repos = [
 	Repository("Global", "https://raw.githubusercontent.com/Bapcraft/craftitizer-global-repo/master/public/")
 ]
 
 def __gen_cached_package_path(pkg):
-	return os.path.join(cache_dir, pkg.name, pkg.version, "pkgconf.py")
+	return os.path.join(cache_dir, "pkg", pkg.name, pkg.version, "pkgconf.py")
 
 def __descriptor(source):
 	line = source.split("\n", 1)[0]
