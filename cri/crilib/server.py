@@ -1,5 +1,5 @@
 import os
-import os.path
+import os.path as paths
 import subprocess
 import ruamel.yaml
 
@@ -9,7 +9,7 @@ class Server(object):
         with open(path, 'r') as data:
             content = data.read()
         cfg = ruamel.yaml.load(content, ruamel.yaml.RoundTripLoader)
-        self.path = path
+        self.server_dir = cfg['path'] if 'path' in cfg.values() else paths.dirname(path)
         self.name = cfg["name"]
         exe_cfg = cfg["exec"]
         self.executor = make_executor(self, exe_cfg["name"], exe_cfg["params"])
@@ -53,10 +53,10 @@ class SimpleJavaExecutor(Executor):
         except IOError:
             os.mkdir(self.subdir)
 
-        if not os.path.isfile(os.path.join(self.subdir, self.jar)):
+        if not paths.isfile(paths.join(serv.server_dir, self.subdir, self.jar)):
             raise Exception("Server jar does not exist.")
 
-        abspath = os.path.abspath(self.subdir)
+        abspath = paths.abspath(self.subdir)
         command = []
         command.append("-Xms" + self.jxms + "M")
         command.append("-Xmx" + self.jxmx + "M")
