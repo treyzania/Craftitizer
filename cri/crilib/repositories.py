@@ -11,8 +11,8 @@ class RepoMeta:
 	def __init__(self, name, url):
 		self.name = name
 		self.url = url
-	
-	def get_package_def_string(desc):
+
+	def get_package_def_string(self, desc):
 		suffixes = get_url_suffixes(desc)
 		for suffix in suffixes:
 			try:
