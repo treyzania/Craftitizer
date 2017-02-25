@@ -32,14 +32,15 @@ class Resource:
             cache.write(res.read())
 
     def install(self, path):
+        abs_path = paths.abspath(path)
         if not self.is_cached():
             self.refresh_cache()
         if path != None: # If they pass None we at least make sure it's cached.
-            parent = paths.dirname(path)
+            parent = paths.dirname(abs_path)
             if not paths.exists(parent):
                 os.makedirs(parent)
-            shutil.copyfile(self.get_cache_path, path(), follow_symlinks=True)
+            shutil.copyfile(self.get_cache_path(), abs_path, follow_symlinks=True)
 
 def request_simple_url(namespace, url):
-    url_hash = hashlib.sha256(url.encode("UTF-8")).hexdigest()
-    return Resource(namespace, "", url, url_hash + ".sha256")
+    url_hash = hashlib.md5(url.encode("UTF-8")).hexdigest()
+    return Resource(namespace, "static", url, url_hash)

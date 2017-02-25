@@ -16,6 +16,11 @@ class Server:
         self.envvars = cfg["envvars"]
         self.group = cfg["group"]
 
+    def get_exec_dir(self):
+        return self.server_dir
+    def get_runtime_dir(self):
+        return ""
+
 class Executor:
     def __init__(self, serv):
         self.server = serv

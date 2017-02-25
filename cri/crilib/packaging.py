@@ -32,16 +32,16 @@ class InstallationRequest:
 		self.resource = res
 		self.path = path
 		self.server = serv
-	def install(self, server):
-		res.install(os.paths.join(self.server.data_dir, self.path))
+	def install(self):
+		self.resource.install(os.path.join(self.server.get_exec_dir(), self.path))
 
 class InstallContext(Context):
 	requests = []
 	def __init__(self, pkg, server):
 		self.package = pkg
 		self.server = server
-	def download(self, url, dest):
-		res = crilib.resource.request_simple_url("pkg." + self.package.name, url)
+	def download_url(self, url, dest):
+		res = crilib.resources.request_simple_url("", url)
 		self.requests.append(InstallationRequest(res, dest, self.server))
 
 class PackageLoader:
