@@ -18,7 +18,7 @@ class Repository:
 
 class PackageModuleDefinition:
 	def __init__(self, modname, version):
-		self.modname = modname
+		self.module_name = modname
 		self.version = version
 
 class PackageMeta:
@@ -76,6 +76,7 @@ def find_package_def(pkg):
 		return cache_path
 
 def __load_module(path, modname):
+	print("Loading:", path, '(', modname, ')')
 	spec = imu.spec_from_file_location(modname, path)
 	confmod = imu.module_from_spec(spec)
 	spec.loader.exec_module(confmod)
@@ -84,7 +85,7 @@ def __load_module(path, modname):
 def __create_package_module_from_file(pkg):
 	path = find_package_def(pkg)
 	desc = __descriptor_from_file(path)
-	return __load_module("cripkg." + desc.name, path)
+	return __load_module(path, "cripkg." + desc.module_name)
 
 class PackageBundle:
 	def __init__(self, meta, desc, mod):
@@ -97,5 +98,5 @@ class PackageBundle:
 def init_package(pkg):
 	path = find_package_def(pkg)
 	desc = __descriptor_from_file(path)
-	mod = __create_package_module_from_file(path)
+	mod = __create_package_module_from_file(pkg)
 	return PackageBundle(pkg, desc, mod)

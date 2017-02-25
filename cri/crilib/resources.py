@@ -35,6 +35,9 @@ class Resource:
         if not self.is_cached():
             self.refresh_cache()
         if path != None: # If they pass None we at least make sure it's cached.
+            parent = paths.dirname(path)
+            if not paths.exists(parent):
+                os.makedirs(parent)
             shutil.copyfile(self.get_cache_path, path(), follow_symlinks=True)
 
 def request_simple_url(namespace, url):

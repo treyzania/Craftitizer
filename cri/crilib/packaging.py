@@ -1,5 +1,7 @@
+import os.path
+
 import crilib.repositories as repos
-import crilib.resources as res
+import crilib.resources
 
 # Stages:
 # * load
@@ -19,31 +21,45 @@ class Context:
 		pass
 
 class LoadContext(Context):
-	self.deps = []
+	deps = []
 	def __init__(self, ldr):
-		super().__init__()
 		self.loader = ldr
 	def depend(name, version):
 		self.deps.append(PackageMeta(name, version))
 
-class PackageLoader:
-	self.package_bundles = []
-	self.use_counts = {}
-	def __init__(self):
-		pass
+class InstallationRequest:
+	def __init__(self, res, path, serv):
+		self.resource = res
+		self.path = path
+		self.server = serv
+	def install(self, server):
+		res.install(os.paths.join(self.server.data_dir, self.path))
 
-	def __find_loaded_package(self, name):
+class InstallContext(Context):
+	requests = []
+	def __init__(self, pkg, server):
+		self.package = pkg
+		self.server = server
+	def download(self, url, dest):
+		res = crilib.resource.request_simple_url("pkg." + self.package.name, url)
+		self.requests.append(InstallationRequest(res, dest, self.server))
+
+class PackageLoader:
+	package_bundles = []
+	use_counts = {}
+
+	def find_inited_package(self, name):
 		for p in self.package_bundles:
 			if p.metadata.name == name:
 				return p
 		return None
 
 	def init_pkg(self, pkg):
-		bundle = self.__find_loaded_package(pkg.name)
+		bundle = self.find_inited_package(pkg.name)
 		if bundle == None:
 			try:
 				bundle = repos.init_package(pkg)
-			except PackageException:
+			except repos.PackageException:
 				raise Exception("Couldn't resolve dependencies.")
 
 			self.package_bundles.append(bundle)
