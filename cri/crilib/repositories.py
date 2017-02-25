@@ -3,6 +3,8 @@ import os.path
 import urllib.request
 import importlib.util as imu
 
+import crilib.log
+
 class Repository:
 	def __init__(self, name, url):
 		self.name = name
@@ -11,6 +13,7 @@ class Repository:
 		return self.url + desc.name + "/" + desc.version + "/pkgconf.py"
 	def get_package_def_data(self, desc):
 		try:
+			crilib.log.announce_dl("package", desc.name + " " + desc.version + " (" + self.name + ")")
 			req = urllib.request.urlopen(self.get_package_url(desc))
 			return req.read().decode("UTF-8")
 		except:
@@ -76,7 +79,6 @@ def find_package_def(pkg):
 		return cache_path
 
 def __load_module(path, modname):
-	print("Loading:", path, '(', modname, ')')
 	spec = imu.spec_from_file_location(modname, path)
 	confmod = imu.module_from_spec(spec)
 	spec.loader.exec_module(confmod)

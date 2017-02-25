@@ -5,6 +5,7 @@ import hashlib
 import shutil
 
 import crilib.repositories as repos
+import crilib.log
 
 class Resource:
     def __init__(self, namespace, cid, url, artifact):
@@ -27,6 +28,7 @@ class Resource:
             os.remove(path)
         if not paths.exists(parent):
             os.makedirs(parent)
+        crilib.log.announce_dl("resource", self.url)
         res = urllib.request.urlopen(self.url)
         with open(path, mode="wb") as cache:
             cache.write(res.read())
