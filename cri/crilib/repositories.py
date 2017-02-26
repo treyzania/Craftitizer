@@ -42,8 +42,7 @@ def __gen_cached_package_path(pkg):
 	return os.path.join(cache_dir, "pkg", pkg.name, pkg.version, "pkgconf.py")
 
 def __descriptor(source):
-	line = source.split("\n", 1)[0]
-	parts = line.split(" ")
+	parts = source.split("\n", 1)[0].split()
 	if not parts[0] == "#cripackage" or len(parts) != 3:
 		raise Exception("Package isn't a #cripackage!")
 	name = parts[1]
