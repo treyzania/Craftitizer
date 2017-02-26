@@ -14,4 +14,4 @@ bundle = ldr.find_inited_package("minecraft-vanilla")
 bundle.module.install(ictx)
 
 for p in ictx.requests:
-    p.install()
+	p.install()
