@@ -35,7 +35,7 @@ class PackageException(Exception):
 
 cache_dir = os.path.expanduser("~/.cache/craftitizer")
 repos = [
-	Repository("Global", "https://raw.githubusercontent.com/Bapcraft/craftitizer-global-repo/master/public/")
+	Repository("global", "https://raw.githubusercontent.com/Bapcraft/craftitizer-global-repo/master/public/")
 ]
 
 def __gen_cached_package_path(pkg):
