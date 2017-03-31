@@ -5,16 +5,18 @@ import importlib.util as imu
 
 import crilib.log
 
+pkg_conf_filename = "pkgconf.py"
+
 class Repository:
 	def __init__(self, name, url):
 		self.name = name
 		self.url = url
-	def get_package_url(self, desc):
-		return self.url + desc.name + "/" + desc.version + "/pkgconf.py"
+	def get_package_url(self, desc, filename):
+		return self.url + desc.name + "/" + desc.version + "/" + filename
 	def get_package_def_data(self, desc):
 		try:
 			crilib.log.announce_dl("package", desc.name + " " + desc.version + " (" + self.name + ")")
-			req = urllib.request.urlopen(self.get_package_url(desc))
+			req = urllib.request.urlopen(self.get_package_url(desc, pkg_conf_filename))
 			return req.read().decode("UTF-8")
 		except:
 			return None
@@ -41,7 +43,7 @@ repos = [
 def __gen_cached_package_path(pkg):
 	return os.path.join(cache_dir, "pkg", pkg.name, pkg.version, "pkgconf.py")
 
-def __descriptor(source):
+def parse_descriptor(source):
 	parts = source.split("\n", 1)[0].split()
 	if not parts[0] == "#cripackage" or len(parts) != 3:
 		raise Exception("Package isn't a #cripackage!")
@@ -51,7 +53,7 @@ def __descriptor(source):
 
 def __descriptor_from_file(path):
 	with open(path, "r") as f:
-		return __descriptor(f.read())
+		return parse_descriptor(f.read())
 
 def find_package_def(pkg):
 	cache_path = __gen_cached_package_path(pkg)
@@ -60,7 +62,7 @@ def find_package_def(pkg):
 			data = r.get_package_def_data(pkg)
 			if data != None:
 				try:
-					__descriptor(data)
+					parse_descriptor(data)
 				except Exception:
 					print("warning: repo", r.name, "has invalid package", pkg.name, pkg.version)
 					continue
