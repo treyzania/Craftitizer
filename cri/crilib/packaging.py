@@ -44,6 +44,20 @@ class InstallContext(Context):
 		res = crilib.resources.request_simple_url("", url)
 		self.requests.append(InstallationRequest(res, dest, self.server))
 
+class ConfigureContext(Context):
+	settings = {}
+	def __init__(self, pkg, server):
+		self.package = pkg
+		self.server = server
+	def prompt_for_string(self, setting, prompt, namespace=None, default_value=''):
+		ns = self.package.name if not namespace == None else namespace
+		if not ns in settings:
+			settings[ns] = {}
+		ns_conf = settings[ns]
+		if setting in ns_conf:
+			ns_conf[setting] = input(prompt + " ")
+		return ns_conf[setting]
+
 class PackageLoader:
 	package_bundles = []
 	use_counts = {}
